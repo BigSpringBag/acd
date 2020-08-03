@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "calendlyampreact",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcalendlyampreact0e0da07e",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

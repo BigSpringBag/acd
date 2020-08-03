@@ -1,0 +1,41 @@
+type Event @model 
+@auth(rules: [
+  { allow: owner, ownerField: "entityId", }
+  { allow: owner, ownerField: "intervieweeId", operations: [create,update] },
+  ])
+
+{
+  id: ID!
+  name: String!
+  description: String
+  location: String
+  entityId: ID
+  datetime: AWSDateTime
+  intervieweeId: ID
+}
+
+# type Query {
+#   getEvent:[Post!]! 
+#   @aws_auth(cognito_groups: ["Bloggers", "Readers"])
+# }
+
+type Entity @model {
+  id: ID!
+  name: String!
+  description: String
+  location: String
+  userlst: [ID]
+}
+
+type User @model {
+  id: ID!
+  name: String!
+  description: String
+  location: String
+  usertype: Usertype!
+}
+
+enum Usertype {
+  employer
+  jobseeker
+}
