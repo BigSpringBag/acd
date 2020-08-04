@@ -1,40 +1,42 @@
-type Event @model 
-@auth(rules: [
-  { allow: owner, ownerField: "entityId", }
-  { allow: owner, ownerField: "intervieweeId", operations: [create,update] },
-  ])
-{
+type Event
+  @model
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "entity" }
+      { allow: owner, ownerField: "interviewee", operations: [create, update] }
+    ]
+  )
+  @key(
+    name: "byEntity"
+    fields: ["entity", "datetime"]
+    queryField: "listEventsByEntity"
+  ) {
   id: ID!
-  name: String!
-  description: String
+  name: String @auth(rules: [{ allow: owner, ownerField: "entity" }])
+  description: String @auth(rules: [{ allow: owner, ownerField: "entity" }])
   location: String
-  entityId: ID
+    @auth(
+      rules: [
+        { allow: owner, ownerField: "entity" }
+        {
+          allow: owner
+          ownerField: "interviewee"
+          operations: [create, update]
+        }
+      ]
+    )
+  entity: ID!
   datetime: AWSDateTime
-  intervieweeId: ID
+    @auth(
+      rules: [
+        { allow: owner, ownerField: "entity" }
+        {
+          allow: owner
+          ownerField: "interviewee"
+          operations: [create, update]
+        }
+      ]
+    )
+  interviewee: ID!
 }
 
-# type Query {
-#   getEvent:[Post!]! 
-#   @aws_auth(cognito_groups: ["Bloggers", "Readers"])
-# }
-
-type Entity @model {
-  id: ID!
-  name: String!
-  description: String
-  location: String
-  userlst: [ID]
-}
-
-type User @model {
-  id: ID!
-  name: String!
-  description: String
-  location: String
-  usertype: Usertype!
-}
-
-enum Usertype {
-  employer
-  jobseeker
-}
