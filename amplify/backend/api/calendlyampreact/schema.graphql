@@ -3,7 +3,7 @@ type Event
   @auth(
     rules: [
       { allow: owner, ownerField: "entity" }
-      { allow: owner, ownerField: "interviewee", operations: [create, update] }
+      { allow: owner, ownerField: "interviewee", operations: [create, update, read] }
     ]
   )
   @key(
@@ -12,8 +12,8 @@ type Event
     queryField: "listEventsByEntity"
   ) {
   id: ID!
-  name: String @auth(rules: [{ allow: owner, ownerField: "entity" }])
-  description: String @auth(rules: [{ allow: owner, ownerField: "entity" }])
+  name: String 
+  description: String
   location: String
     @auth(
       rules: [
@@ -21,7 +21,7 @@ type Event
         {
           allow: owner
           ownerField: "interviewee"
-          operations: [create, update]
+          operations: [create, update, read]
         }
       ]
     )
@@ -33,10 +33,25 @@ type Event
         {
           allow: owner
           ownerField: "interviewee"
-          operations: [create, update]
+          operations: [create, update, read]
         }
       ]
     )
   interviewee: ID!
 }
 
+type JobPost
+  @model
+  @auth(rules: [{ allow: owner, ownerField: "entity" }])
+  @key(
+    name: "byEntity"
+    fields: ["entity"]
+    queryField: "listJobPostsByEntity"
+  ) {
+
+  id: ID!
+  name: String
+  description: String
+  location: String
+  entity: ID!
+}
