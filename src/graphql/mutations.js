@@ -11,9 +11,18 @@ export const createEvent = /* GraphQL */ `
       name
       description
       location
-      entityId
+      entity
       datetime
-      intervieweeId
+      interviewee {
+        id
+        name
+        description
+        location
+        resume
+        createdAt
+        updatedAt
+      }
+      jobPost
       createdAt
       updatedAt
     }
@@ -29,9 +38,18 @@ export const updateEvent = /* GraphQL */ `
       name
       description
       location
-      entityId
+      entity
       datetime
-      intervieweeId
+      interviewee {
+        id
+        name
+        description
+        location
+        resume
+        createdAt
+        updatedAt
+      }
+      jobPost
       createdAt
       updatedAt
     }
@@ -47,105 +65,114 @@ export const deleteEvent = /* GraphQL */ `
       name
       description
       location
-      entityId
+      entity
       datetime
-      intervieweeId
+      interviewee {
+        id
+        name
+        description
+        location
+        resume
+        createdAt
+        updatedAt
+      }
+      jobPost
       createdAt
       updatedAt
     }
   }
 `;
-export const createEntity = /* GraphQL */ `
-  mutation CreateEntity(
-    $input: CreateEntityInput!
-    $condition: ModelEntityConditionInput
+export const createJobPost = /* GraphQL */ `
+  mutation CreateJobPost(
+    $input: CreateJobPostInput!
+    $condition: ModelJobPostConditionInput
   ) {
-    createEntity(input: $input, condition: $condition) {
+    createJobPost(input: $input, condition: $condition) {
       id
       name
       description
       location
-      userlst
+      entity
       createdAt
       updatedAt
     }
   }
 `;
-export const updateEntity = /* GraphQL */ `
-  mutation UpdateEntity(
-    $input: UpdateEntityInput!
-    $condition: ModelEntityConditionInput
+export const updateJobPost = /* GraphQL */ `
+  mutation UpdateJobPost(
+    $input: UpdateJobPostInput!
+    $condition: ModelJobPostConditionInput
   ) {
-    updateEntity(input: $input, condition: $condition) {
+    updateJobPost(input: $input, condition: $condition) {
       id
       name
       description
       location
-      userlst
+      entity
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteEntity = /* GraphQL */ `
-  mutation DeleteEntity(
-    $input: DeleteEntityInput!
-    $condition: ModelEntityConditionInput
+export const deleteJobPost = /* GraphQL */ `
+  mutation DeleteJobPost(
+    $input: DeleteJobPostInput!
+    $condition: ModelJobPostConditionInput
   ) {
-    deleteEntity(input: $input, condition: $condition) {
+    deleteJobPost(input: $input, condition: $condition) {
       id
       name
       description
       location
-      userlst
+      entity
       createdAt
       updatedAt
     }
   }
 `;
-export const createUser = /* GraphQL */ `
-  mutation CreateUser(
-    $input: CreateUserInput!
-    $condition: ModelUserConditionInput
+export const createCandidateInfo = /* GraphQL */ `
+  mutation CreateCandidateInfo(
+    $input: CreateCandidateInfoInput!
+    $condition: ModelCandidateInfoConditionInput
   ) {
-    createUser(input: $input, condition: $condition) {
+    createCandidateInfo(input: $input, condition: $condition) {
       id
       name
       description
       location
-      usertype
+      resume
       createdAt
       updatedAt
     }
   }
 `;
-export const updateUser = /* GraphQL */ `
-  mutation UpdateUser(
-    $input: UpdateUserInput!
-    $condition: ModelUserConditionInput
+export const updateCandidateInfo = /* GraphQL */ `
+  mutation UpdateCandidateInfo(
+    $input: UpdateCandidateInfoInput!
+    $condition: ModelCandidateInfoConditionInput
   ) {
-    updateUser(input: $input, condition: $condition) {
+    updateCandidateInfo(input: $input, condition: $condition) {
       id
       name
       description
       location
-      usertype
+      resume
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteUser = /* GraphQL */ `
-  mutation DeleteUser(
-    $input: DeleteUserInput!
-    $condition: ModelUserConditionInput
+export const deleteCandidateInfo = /* GraphQL */ `
+  mutation DeleteCandidateInfo(
+    $input: DeleteCandidateInfoInput!
+    $condition: ModelCandidateInfoConditionInput
   ) {
-    deleteUser(input: $input, condition: $condition) {
+    deleteCandidateInfo(input: $input, condition: $condition) {
       id
       name
       description
       location
-      usertype
+      resume
       createdAt
       updatedAt
     }

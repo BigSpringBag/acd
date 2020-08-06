@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "calendlyampreact0e0da07e_identitypool_0e0da07e",
+    "identityPoolName": "amplifycalendlydemo34ee7716_identitypool_34ee7716",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "calend0e0da07e",
-    "userPoolName": "calendlyampreact0e0da07e_userpool_0e0da07e",
+    "resourceNameTruncated": "amplif34ee7716",
+    "userPoolName": "amplifycalendlydemo34ee7716_userpool_34ee7716",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "calend0e0da07e_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "amplif34ee7716_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "0e0da07e",
-    "resourceName": "calendlyampreact0e0da07e",
+    "sharedId": "34ee7716",
+    "resourceName": "amplifycalendlydemo34ee7716",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [

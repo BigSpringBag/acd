@@ -2,123 +2,150 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateEvent = /* GraphQL */ `
-  subscription OnCreateEvent($entityId: String!) {
-    onCreateEvent(entityId: $entityId) {
+  subscription OnCreateEvent($entity: String!, $interviewee: String!) {
+    onCreateEvent(entity: $entity, interviewee: $interviewee) {
       id
       name
       description
       location
-      entityId
+      entity
       datetime
-      intervieweeId
+      interviewee {
+        id
+        name
+        description
+        location
+        resume
+        createdAt
+        updatedAt
+      }
+      jobPost
       createdAt
       updatedAt
     }
   }
 `;
 export const onUpdateEvent = /* GraphQL */ `
-  subscription OnUpdateEvent($entityId: String!) {
-    onUpdateEvent(entityId: $entityId) {
+  subscription OnUpdateEvent($entity: String!, $interviewee: String!) {
+    onUpdateEvent(entity: $entity, interviewee: $interviewee) {
       id
       name
       description
       location
-      entityId
+      entity
       datetime
-      intervieweeId
+      interviewee {
+        id
+        name
+        description
+        location
+        resume
+        createdAt
+        updatedAt
+      }
+      jobPost
       createdAt
       updatedAt
     }
   }
 `;
 export const onDeleteEvent = /* GraphQL */ `
-  subscription OnDeleteEvent($entityId: String!) {
-    onDeleteEvent(entityId: $entityId) {
+  subscription OnDeleteEvent($entity: String!, $interviewee: String!) {
+    onDeleteEvent(entity: $entity, interviewee: $interviewee) {
       id
       name
       description
       location
-      entityId
+      entity
       datetime
-      intervieweeId
+      interviewee {
+        id
+        name
+        description
+        location
+        resume
+        createdAt
+        updatedAt
+      }
+      jobPost
       createdAt
       updatedAt
     }
   }
 `;
-export const onCreateEntity = /* GraphQL */ `
-  subscription OnCreateEntity {
-    onCreateEntity {
+export const onCreateJobPost = /* GraphQL */ `
+  subscription OnCreateJobPost($entity: String!, $name: String!) {
+    onCreateJobPost(entity: $entity, name: $name) {
       id
       name
       description
       location
-      userlst
+      entity
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateEntity = /* GraphQL */ `
-  subscription OnUpdateEntity {
-    onUpdateEntity {
+export const onUpdateJobPost = /* GraphQL */ `
+  subscription OnUpdateJobPost($entity: String!, $name: String!) {
+    onUpdateJobPost(entity: $entity, name: $name) {
       id
       name
       description
       location
-      userlst
+      entity
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteEntity = /* GraphQL */ `
-  subscription OnDeleteEntity {
-    onDeleteEntity {
+export const onDeleteJobPost = /* GraphQL */ `
+  subscription OnDeleteJobPost($entity: String!, $name: String!) {
+    onDeleteJobPost(entity: $entity, name: $name) {
       id
       name
       description
       location
-      userlst
+      entity
       createdAt
       updatedAt
     }
   }
 `;
-export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
+export const onCreateCandidateInfo = /* GraphQL */ `
+  subscription OnCreateCandidateInfo($name: String!) {
+    onCreateCandidateInfo(name: $name) {
       id
       name
       description
       location
-      usertype
+      resume
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
+export const onUpdateCandidateInfo = /* GraphQL */ `
+  subscription OnUpdateCandidateInfo($name: String!) {
+    onUpdateCandidateInfo(name: $name) {
       id
       name
       description
       location
-      usertype
+      resume
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
+export const onDeleteCandidateInfo = /* GraphQL */ `
+  subscription OnDeleteCandidateInfo($name: String!) {
+    onDeleteCandidateInfo(name: $name) {
       id
       name
       description
       location
-      usertype
+      resume
       createdAt
       updatedAt
     }

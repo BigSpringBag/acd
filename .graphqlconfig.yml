@@ -1,6 +1,6 @@
 projects:
-  calendlyampreact:
-    schemaPath: amplify/backend/api/calendlyampreact/build/schema.graphql
+  amplifycalendlydemo:
+    schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js
     excludes:

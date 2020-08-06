@@ -1,6 +1,6 @@
 {
 	"auth": {
-		"calendlyampreact0e0da07e": {
+		"amplifycalendlydemo34ee7716": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": [],
@@ -8,7 +8,7 @@
 		}
 	},
 	"api": {
-		"calendlyampreact": {
+		"amplifycalendlydemo": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
 			"output": {
@@ -16,12 +16,19 @@
 					"defaultAuthentication": {
 						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
 						"userPoolConfig": {
-							"userPoolId": "authcalendlyampreact0e0da07e"
+							"userPoolId": "authamplifycalendlydemo34ee7716"
 						}
 					},
 					"additionalAuthenticationProviders": []
 				}
 			}
+		}
+	},
+	"function": {},
+	"storage": {
+		"resume": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
 		}
 	}
 }

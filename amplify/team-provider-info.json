@@ -1,19 +1,19 @@
 {
     "dev": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-calendlyampreact-dev-205030-authRole",
-            "UnauthRoleArn": "arn:aws:iam::756273826396:role/amplify-calendlyampreact-dev-205030-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::756273826396:role/amplify-calendlyampreact-dev-205030-authRole",
+            "AuthRoleName": "amplify-amplifycalendlydemo-dev-123718-authRole",
+            "UnauthRoleArn": "arn:aws:iam::756273826396:role/amplify-amplifycalendlydemo-dev-123718-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::756273826396:role/amplify-amplifycalendlydemo-dev-123718-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-calendlyampreact-dev-205030-deployment",
-            "UnauthRoleName": "amplify-calendlyampreact-dev-205030-unauthRole",
-            "StackName": "amplify-calendlyampreact-dev-205030",
-            "StackId": "arn:aws:cloudformation:us-east-1:756273826396:stack/amplify-calendlyampreact-dev-205030/018f5230-d391-11ea-a919-1277ff2044b7",
-            "AmplifyAppId": "dincyad0j4d5a"
+            "DeploymentBucketName": "amplify-amplifycalendlydemo-dev-123718-deployment",
+            "UnauthRoleName": "amplify-amplifycalendlydemo-dev-123718-unauthRole",
+            "StackName": "amplify-amplifycalendlydemo-dev-123718",
+            "StackId": "arn:aws:cloudformation:us-east-1:756273826396:stack/amplify-amplifycalendlydemo-dev-123718/194e6110-d803-11ea-b421-0e92a46f2873",
+            "AmplifyAppId": "d2xkk94t4arl0q"
         },
         "categories": {
             "auth": {
-                "calendlyampreact0e0da07e": {}
+                "amplifycalendlydemo34ee7716": {}
             }
         }
     }

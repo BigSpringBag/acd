@@ -8,9 +8,18 @@ export const getEvent = /* GraphQL */ `
       name
       description
       location
-      entityId
+      entity
       datetime
-      intervieweeId
+      interviewee {
+        id
+        name
+        description
+        location
+        resume
+        createdAt
+        updatedAt
+      }
+      jobPost
       createdAt
       updatedAt
     }
@@ -28,9 +37,18 @@ export const listEvents = /* GraphQL */ `
         name
         description
         location
-        entityId
+        entity
         datetime
-        intervieweeId
+        interviewee {
+          id
+          name
+          description
+          location
+          resume
+          createdAt
+          updatedAt
+        }
+        jobPost
         createdAt
         updatedAt
       }
@@ -38,32 +56,32 @@ export const listEvents = /* GraphQL */ `
     }
   }
 `;
-export const getEntity = /* GraphQL */ `
-  query GetEntity($id: ID!) {
-    getEntity(id: $id) {
+export const getJobPost = /* GraphQL */ `
+  query GetJobPost($id: ID!) {
+    getJobPost(id: $id) {
       id
       name
       description
       location
-      userlst
+      entity
       createdAt
       updatedAt
     }
   }
 `;
-export const listEntitys = /* GraphQL */ `
-  query ListEntitys(
-    $filter: ModelEntityFilterInput
+export const listJobPosts = /* GraphQL */ `
+  query ListJobPosts(
+    $filter: ModelJobPostFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listEntitys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listJobPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
         description
         location
-        userlst
+        entity
         createdAt
         updatedAt
       }
@@ -71,32 +89,101 @@ export const listEntitys = /* GraphQL */ `
     }
   }
 `;
-export const getUser = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
+export const getCandidateInfo = /* GraphQL */ `
+  query GetCandidateInfo($id: ID!) {
+    getCandidateInfo(id: $id) {
       id
       name
       description
       location
-      usertype
+      resume
       createdAt
       updatedAt
     }
   }
 `;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $filter: ModelUserFilterInput
+export const listCandidateInfos = /* GraphQL */ `
+  query ListCandidateInfos(
+    $filter: ModelCandidateInfoFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listCandidateInfos(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
         description
         location
-        usertype
+        resume
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const listEventsByEntity = /* GraphQL */ `
+  query ListEventsByEntity(
+    $entity: ID
+    $datetime: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelEventFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEventsByEntity(
+      entity: $entity
+      datetime: $datetime
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        description
+        location
+        entity
+        datetime
+        interviewee {
+          id
+          name
+          description
+          location
+          resume
+          createdAt
+          updatedAt
+        }
+        jobPost
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const listJobPostsByEntity = /* GraphQL */ `
+  query ListJobPostsByEntity(
+    $entity: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelJobPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listJobPostsByEntity(
+      entity: $entity
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        description
+        location
+        entity
         createdAt
         updatedAt
       }
