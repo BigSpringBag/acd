@@ -24,7 +24,14 @@
 			}
 		}
 	},
-	"function": {},
+	"function": {
+		"postConfirmation": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": []
+		}
+	},
 	"storage": {
 		"resume": {
 			"service": "S3",
