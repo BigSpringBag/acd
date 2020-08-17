@@ -12,8 +12,13 @@
             "AmplifyAppId": "d2xkk94t4arl0q"
         },
         "categories": {
+            "function": {
+                "amplifycalendlydemoa51c7064a51c7064PostConfirmation": {
+                    "GROUP": ""
+                }
+            },
             "auth": {
-                "amplifycalendlydemo34ee7716": {}
+                "amplifycalendlydemoa51c7064a51c7064": {}
             }
         }
     }

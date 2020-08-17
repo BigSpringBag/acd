@@ -37,21 +37,34 @@ type Event
         }
       ]
     )
-  interviewee: ID!
+  interviewee: CandidateInfo @connection
+  jobPost: ID!
 }
 
-# type JobPost
-#   @model
-#   @auth(rules: [{ allow: owner, ownerField: "entity" }])
-#   @key(
-#     name: "byEntity"
-#     fields: ["entity"]
-#     queryField: "listJobPostsByEntity"
-#   ) {
+type JobPost
+  @model
+  @auth(rules: [{ allow: owner, ownerField: "entity" }, { allow: owner, ownerField: "name" }])
+  @key(
+    name: "byEntity"
+    fields: ["entity"]
+    queryField: "listJobPostsByEntity"
+  ) {
 
-#   id: ID!
-#   name: String
-#   description: String
-#   location: String
-#   entity: ID!
-# }
+  id: ID!
+  name: String
+  description: String
+  location: String
+  entity: ID!
+}
+
+
+type CandidateInfo
+  @model
+  @auth(rules: [{ allow: owner, ownerField: "name" }])
+  {
+  id: ID!
+  name: String
+  description: String
+  location: String
+  resume: String
+}

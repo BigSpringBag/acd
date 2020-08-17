@@ -1,0 +1,68 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters": {
+        "authamplifycalendlydemoa51c7064a51c7064UserPoolId": {
+            "Type": "String",
+            "Default": "authamplifycalendlydemoa51c7064a51c7064UserPoolId"
+        },
+        
+        "authamplifycalendlydemoa51c7064a51c7064AppClientID": {
+            "Type": "String",
+            "Default": "authamplifycalendlydemoa51c7064a51c7064AppClientID"
+        },
+        "authamplifycalendlydemoa51c7064a51c7064AppClientIDWeb": {
+            "Type": "String",
+            "Default": "authamplifycalendlydemoa51c7064a51c7064AppClientIDWeb"
+        },
+        "AuthRoleArn": {
+            "Type": "String"
+        },
+        "UnauthRoleArn": {
+            "Type": "String"
+        },
+        "env": {
+            "Type": "String"
+        }
+    },
+    "Conditions": {
+        "ShouldNotCreateEnvResources": {
+            "Fn::Equals": [
+                {
+                    "Ref": "env"
+                },
+                "NONE"
+            ]
+        }
+    },
+    "Resources": {
+    
+        "candidatesGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "candidates",
+              "Precedence" : 1,
+              
+              "UserPoolId" : {
+                "Ref": "authamplifycalendlydemoa51c7064a51c7064UserPoolId"
+              } 
+            }
+        },
+        
+    
+        "employersGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "employers",
+              "Precedence" : 2,
+              
+              "UserPoolId" : {
+                "Ref": "authamplifycalendlydemoa51c7064a51c7064UserPoolId"
+              } 
+            }
+        },
+        
+    
+    
+    },
+    
+}
