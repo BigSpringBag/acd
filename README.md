@@ -27,7 +27,8 @@ prerequisites: Amplify Cli basics
 
 NOTE: Once auth is pushed, update to auth may result in errors for the following. So config excepted attributes before push.
 
-1. Case insensitive
+1. Case insensitive 
+    > Restric user from creating account like Tao@tao.com and tao@tao.com
     - Amplify CLI does not provide generic config for this. In order to do this, in amplify/backend/auth/{UserPoolName}/{UserPoolName}-cloudformation-template.yml
     add the following to the UserPool properties
     ```
@@ -46,6 +47,7 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
     ```
 
 2. Change password length: (default 8)
+    > Apply password policy during sign up
     - There are two ways to do this:
         1. From Amplify CLI, select the following when prompt
         ``` 
@@ -62,6 +64,7 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
         ```
     
 3. Post confirmation -> put user into group (with Amplify CLI)
+    > Categorize user into group after sign up
     - Configure this part from the CLI
     ```
         Do you want to use the default authentication and security configuration? - Manual configuration
