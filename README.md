@@ -45,6 +45,10 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
                     CaseSensitive: false
                 
     ```
+    tao@tao.com already exists in the user pool
+
+    <img src="./readmeimg/caseinsensitivetesting.png" width="300" alt="Case Insensitive Testing">
+
     Source: https://github.com/aws-amplify/amplify-cli/issues/3494 (*monitor this issue, as it might be closed when option added to Amplify Cli)
 
 2. Change password length: (default 8)
@@ -64,8 +68,8 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
             "passwordPolicyMinLength": "10"
         ```
     
-3. Post confirmation -> put user into group (with Amplify CLI)
-    > Categorize user into group after sign up
+3. Add user to default group on postConfirmation (with Amplify Cli)
+    > Add user to a default group, such as "user" group 
     - Configure this part from the CLI
     ```
         Do you want to use the default authentication and security configuration? - Manual configuration
@@ -74,10 +78,39 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
         .
         Do you want to enable any of the following capabilities? - Add User to Group
         ...
-        ? Do you want to configure Lambda Triggers for Cognito? Yes
+        ? Do you want to configure Lambda Triggers for Cognito? - Yes
         ? Which triggers do you want to enable for Cognito - Post Confirmation
         ? What functionality do you want to use for Post Confirmation - Add User To Group
-        ? Enter the name of the group to which users will be added. (You can leave this blank, as it depends on your logic)
-        ? Do you want to edit your add-to-group function now? Yes
+        ? Enter the name of the group to which users will be added. - user
     ```
     Now you able to see a function created for you to add-to-group with post confirmation trigger at amplify/backend/function/{UserPoolName}PostConfirmation/src/add-to-group.js
+    The actual trigger is at amplify/team-provider-info.json
+    ```
+        "function": {
+            "amplifycalendlydemoa51c7064a51c7064PostConfirmation": {
+                "GROUP": "user"
+            }
+    ```
+    path: {}env -> {}categories -> {}function
+
+4. Add admin query for Cognito user pool
+    > Allow admin to manage user pool by calling admin query
+    - Configure this part from the Cli
+    ```
+        Do you want to use the default authentication and security configuration? Manual configuration
+        .
+        .
+        .
+        Do you want to add an admin queries API? Yes
+        ? Do you want to restrict access to the admin queries API to a specific Group Yes
+        ? Select the group to restrict access with: admin
+        .
+        .
+        .
+    ```
+    
+5. Create step function in Amplify Cli
+
+NOTE: 
+
+-   sometime ```amp push``` does not detect changes, change something in the function (somewhere critical), then ```amp push``` again.

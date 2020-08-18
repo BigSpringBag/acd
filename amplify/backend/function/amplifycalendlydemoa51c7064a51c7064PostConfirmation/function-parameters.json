@@ -12,6 +12,6 @@
   "triggerTemplate": "PostConfirmation.json.ejs",
   "roleName": "amplifycalendlydemoa51c7064a51c7064PostConfirmation",
   "skipEdit": true,
-  "GROUP": "",
+  "GROUP": "user",
   "triggerEventPath": "PostConfirmation.event.json"
 }
