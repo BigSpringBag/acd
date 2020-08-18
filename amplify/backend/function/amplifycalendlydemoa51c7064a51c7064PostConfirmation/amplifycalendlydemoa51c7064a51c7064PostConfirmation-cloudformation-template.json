@@ -102,7 +102,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-amplifycalendlydemo-dev-123718-deployment",
-					"S3Key": "amplify-builds/amplifycalendlydemoa51c7064a51c7064PostConfirmation-623635687a4c7a454f51-build.zip"
+					"S3Key": "amplify-builds/amplifycalendlydemoa51c7064a51c7064PostConfirmation-6c4c54346835334c542b-build.zip"
 				}
 			}
 		},

@@ -45,6 +45,7 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
                     CaseSensitive: false
                 
     ```
+    Source: https://github.com/aws-amplify/amplify-cli/issues/3494 (*monitor this issue, as it might be closed when option added to Amplify Cli)
 
 2. Change password length: (default 8)
     > Apply password policy during sign up

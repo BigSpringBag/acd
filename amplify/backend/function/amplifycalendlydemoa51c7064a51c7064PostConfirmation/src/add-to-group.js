@@ -19,6 +19,7 @@ exports.handler = async (event, context, callback) => {
     await cognitoidentityserviceprovider.createGroup(groupParams).promise();
   }
 
+  
   try {
     await cognitoidentityserviceprovider.adminAddUserToGroup(addUserParams).promise();
     callback(null, event);

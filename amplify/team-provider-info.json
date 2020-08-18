@@ -14,11 +14,12 @@
         "categories": {
             "function": {
                 "amplifycalendlydemoa51c7064a51c7064PostConfirmation": {
-                    "GROUP": ""
+                    "GROUP": "user"
                 }
             },
             "auth": {
-                "amplifycalendlydemoa51c7064a51c7064": {}
+                "amplifycalendlydemoa51c7064a51c7064": {},
+                "userPoolGroups": {}
             }
         }
     }
