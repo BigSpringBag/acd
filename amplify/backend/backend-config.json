@@ -95,5 +95,11 @@
 			"service": "S3",
 			"providerPlugin": "awscloudformation"
 		}
+  },
+  "workflow": {
+		"simpleStepFunctions": {
+			"service": "StepFunctions",
+			"providerPlugin": "awscloudformation"
+		}
 	}
 }

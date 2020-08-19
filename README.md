@@ -85,6 +85,7 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
     ```
     Now you able to see a function created for you to add-to-group with post confirmation trigger at amplify/backend/function/{UserPoolName}PostConfirmation/src/add-to-group.js
     The actual trigger is at amplify/backend/function/{UserPoolName}PostConfirmation/function-parameters.json
+    But the config is at amplify/team-provider-info.json
 
 4. Add admin query for Cognito user pool
     > Allow admin to manage user pool by calling admin query
