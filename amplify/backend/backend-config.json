@@ -95,9 +95,9 @@
 			"service": "S3",
 			"providerPlugin": "awscloudformation"
 		}
-  },
-  "workflow": {
-		"simpleStepFunctions": {
+	},
+	"workflow": {
+		"acdSimpleStepFunctions": {
 			"service": "StepFunctions",
 			"providerPlugin": "awscloudformation"
 		}

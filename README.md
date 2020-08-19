@@ -105,8 +105,123 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
     All the admin query function are added for you.
     (there are some package have security issues, need to fix them)
 
-5. Create step function in Amplify Cli
-    WIP...
+5. Create Custom Resource in Amplify Cli
+    
+    In order to use some of the tools that Amplify Cli does not offer at the current time, use Custom CloudFormation Stacks in Amplify Cli. This just a short version and tips & tricks of the actual documentation.
+    
+    Doc: https://docs.amplify.aws/cli/usage/customcf
+
+    Steps:
+    1.  Create the placeholder file by following structure
+        > NOTE: 
+        > > CF TEMPLATE NAME MUST BE UNIQUE
+        > > 
+        > > Prepend Custom Resource Name with Custom Project Name
+        
+        ```
+        amplify
+            \backend
+                \<custom-category-name>
+                    \<custom-resource-name>
+                        parameters.json 
+                        <category name>-<resource name>-template.json 
+        ```
+    
+    2. Update amplify/backend/backend-config.json 
+        > this will hint Amplify that you created something
+        ```json
+            {
+                .
+                .
+                .
+            	"<custom-category-name>": {
+                    "<custom-resource-name>": {
+                        "service": "<custom-aws-service-name>", # can be anything
+                        "providerPlugin": "awscloudformation"
+                    }
+                }
+            }
+        ```
+    
+    3. Write the actual CloudFormation template
+        > NOTE: You must add the following to the Parameters section
+        ```json
+            "Parameters": {
+
+                "CloudWatchRule": {
+
+                    "Type": "String",
+
+                    "Default": "NONE",
+
+                    "Description": " Schedule Expression"
+
+                },
+
+                "env": {
+
+                    "Type": "String"
+
+                }
+
+            },
+        ```
+        Or it will result in the following message
+        ```
+        CREATE_FAILED workflowsimpleStepFunctions AWS::CloudFormation::Stack Wed Aug 19 2020 08:43:17 GMT-0400 (Eastern Daylight Time) Parameter values specified for a template which does not require them.
+        ```
+    
+    4. Put your parameters in parameters.json
+
+        ```parameters.json``` is a json file of parameters that will be passed to the cloudformation template
+        - in ```parameters.json```
+            ```json
+                {
+                    "key":"value"
+                }
+            ```
+        - in ```<category name>-<resouce name>-template.json```
+            ```json
+                "Parameters": {
+                    
+                    "key": {
+                        "Type": "String",
+                        "Default": "",
+                        "Description": "something"
+                    },
+            ```
+
+    5. Deploy what you just wrote
+        - Run ```amp env checkout dev``` populate the CLI runtime files and make it aware of the newly added custom resources
+        - Then ```amp push```
+    
+    6. Reference other resource
+        > In ``` parameters.json ```
+        ```json
+            "Parameters": {
+            // Rest of the parameters
+
+                "authmycognitoresourceUserPoolId": { // The format out here is `<category><resource-name><attribute-name>` - we have defined all of these in the `backend-config.json` file above
+                    "Type": "String"
+                }
+            },
+        ```
+        > In the CloudFormation template
+        ```json
+            {
+                "authmycognitoresourceUserPoolId": {  // The format out here is `<category><resource-name><attribute-name>` - we have defined all of these in the `backend-config.json` file above
+                    "Fn::GetAtt": [
+                        "authmycognitoresource",  // check `amplify status` to find resource name in the category auth
+                        "Outputs.UserPoolId"
+                    ]
+                }
+            }
+        ```
+
+6. Create Step Functions in Amplify Cli
+    - Referece to Create Custom Resource in section 5
+    - 
+
 
 
 NOTE: 
