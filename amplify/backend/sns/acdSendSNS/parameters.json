@@ -1,0 +1,5 @@
+{
+  "sqsacdSendSQSSqsArn": {
+    "Fn::GetAtt": ["sqsacdSendSQS", "Outputs.SqsArn"]
+  }
+}

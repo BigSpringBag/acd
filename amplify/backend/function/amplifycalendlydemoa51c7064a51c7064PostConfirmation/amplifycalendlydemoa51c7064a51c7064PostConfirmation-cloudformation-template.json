@@ -101,7 +101,7 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-amplifycalendlydemo-dev-123718-deployment",
+					"S3Bucket": "amplify-amplifycalendlydemo-dev-201301-deployment",
 					"S3Key": "amplify-builds/amplifycalendlydemoa51c7064a51c7064PostConfirmation-6c4c54346835334c542b-build.zip"
 				}
 			}

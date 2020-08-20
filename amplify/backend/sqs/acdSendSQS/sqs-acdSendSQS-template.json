@@ -1,0 +1,33 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "An example template with an IAM role for a Lambda state machine.",
+  "Parameters": {
+    "CloudWatchRule": {
+      "Type": "String",
+      "Default": "NONE",
+      "Description": " Schedule Expression"
+    },
+    "env": {
+      "Type": "String"
+    },
+    "queueName": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "acdQueue": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "QueueName": {
+          "Ref": "queueName"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "SqsArn": {
+      "Description" : "ARN of source queue",
+      "Value" : { "Fn::GetAtt" : ["acdQueue", "Arn"]}
+    }
+  }
+}

@@ -21,6 +21,14 @@ amp remove <option>
 amp delete # only use it when you want to flip the table, Amplify Cli is infested with bugs
 ```
 
+if you really want to flip the table like i did, ```amp delete``` then remove the following
+- amplify/#current-cloud-backend
+- amplify/.config/local-aws-info.json
+- amplify/.config/local-env-info.json
+- amplify/team-provider-info.json
+- amplify/backend/amplify-meta.json
+
+
 TO-DO:
 
 prerequisites: Amplify Cli basics
@@ -196,17 +204,7 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
         - Then ```amp push```
     
     6. Reference other resource
-        > In ``` parameters.json ```
-        ```json
-            "Parameters": {
-            // Rest of the parameters
-
-                "authmycognitoresourceUserPoolId": { // The format out here is `<category><resource-name><attribute-name>` - we have defined all of these in the `backend-config.json` file above
-                    "Type": "String"
-                }
-            },
-        ```
-        > In the CloudFormation template
+        > In ``` parameters.json ``` (Don't forget the ```Outputs.```)
         ```json
             {
                 "authmycognitoresourceUserPoolId": {  // The format out here is `<category><resource-name><attribute-name>` - we have defined all of these in the `backend-config.json` file above
@@ -217,10 +215,21 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
                 }
             }
         ```
+        
+        > In the CloudFormation template
+        ```json
+            "Parameters": {
+            // Rest of the parameters
 
-6. Create Step Functions in Amplify Cli
-    - Referece to Create Custom Resource in section 5
-    - 
+                "authmycognitoresourceUserPoolId": { // The format out here is `<category><resource-name><attribute-name>` - we have defined all of these in the `backend-config.json` file above
+                    "Type": "String"
+                }
+            },
+        ```
+
+6. Create SNS & SQS, SQS is the subscriber of SNS
+    - Follow 5.6 on how to get SQS arn for SQS in it's subscription section
+    - When adding definetion in backend-config.json, make sure the creation of SNS is dependsOn SQS, so you don't create a race condition.
 
 
 
