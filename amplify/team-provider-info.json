@@ -20,7 +20,8 @@
                 "amplifycalendlydemoa51c7064a51c7064PostConfirmation": {
                     "GROUP": "user"
                 },
-                "AdminQueries3ef9f8a9": {}
+                "AdminQueries3ef9f8a9": {},
+                "acdSendSNSLambda": {}
             }
         }
     }

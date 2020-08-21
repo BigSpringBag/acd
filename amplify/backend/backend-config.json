@@ -74,6 +74,18 @@
           "attributes": ["UserPoolId"]
         }
       ]
+    },
+    "acdSendSNSLambda": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "sns",
+          "resourceName": "acdSendSNS",
+          "attributes": ["acdSNSTopicArn"]
+        }
+      ]
     }
   },
   "storage": {

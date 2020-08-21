@@ -1,0 +1,6 @@
+{
+    "snsacdSendSNSacdSNSTopicArn": {
+      "Fn::GetAtt": ["snsacdSendSNS", "Outputs.acdSNSTopicArn"]
+    }
+  }
+  

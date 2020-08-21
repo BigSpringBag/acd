@@ -231,6 +231,24 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
     - Follow 5.6 on how to get SQS arn for SQS in it's subscription section
     - When adding definetion in backend-config.json, make sure the creation of SNS is dependsOn SQS, so you don't create a race condition.
 
+TO-DO list:
+
+    Two resources SNS, and SQS.
+        SQS will be a subscriber of SNS, which means it will receive the message that SNS publishes.
+    Two λ functions:
+        One function to send a message to SNS
+        A second function to be triggered when a message is received by SQS (queue).
+    Two workflows:
+        Send an email
+        Will receive parameters: {email: {to, subject, htmlBody, textBody}, dueDate}
+        Will wait until TimestampPath matches dueDate to invoke a lambda function, which will send an email
+        Workflow will pass the above mentioned parameters to a lambda function
+        fromEmail (email address) will be hard-coded within a lambda function
+    Send an SMS
+        Will receive parameters {phoneNumber, message}
+        Workflow will publish SMS message to SNS
+        Another λ function to trigger/execute SendEmail workflow. This function will pass all needed parameters to a workflow aka StateMachine
+        Ahh, and yet another function to execute SendSMS workflow... 
 
 
 NOTE: 

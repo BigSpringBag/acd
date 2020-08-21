@@ -10,22 +10,27 @@
     "env": {
       "Type": "String"
     },
-    "sqsacdSendSQSSqsArn":{
-      "Type":"String"
+    "sqsacdSendSQSSqsArn": {
+      "Type": "String"
     }
   },
   "Resources": {
-    "MySNSTopic": {
+    "acdSNSTopic": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "Subscription": [
           {
-            "Endpoint": {"Ref":"sqsacdSendSQSSqsArn"},
+            "Endpoint": { "Ref": "sqsacdSendSQSSqsArn" },
             "Protocol": "sqs"
           }
         ],
         "TopicName": "acdTopic"
       }
+    }
+  },
+  "Outputs": {
+    "acdSNSTopicArn": {
+      "Value": { "Ref": "acdSNSTopic" }
     }
   }
 }
