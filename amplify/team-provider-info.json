@@ -21,7 +21,8 @@
                     "GROUP": "user"
                 },
                 "AdminQueries3ef9f8a9": {},
-                "acdSendSNSLambda": {}
+                "acdSendSNSLambda": {},
+                "acdSubSQSLambda": {}
             }
         }
     }
