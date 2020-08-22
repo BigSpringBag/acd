@@ -3,7 +3,6 @@ Do this then restart shell
 echo "alias amp='amplify'" >> ~/.bash_profile
 ```
 
-
 Userful commands
 
 ```bash
@@ -231,6 +230,72 @@ NOTE: Once auth is pushed, update to auth may result in errors for the following
     - Follow 5.6 on how to get SQS arn for SQS in it's subscription section
     - When adding definetion in backend-config.json, make sure the creation of SNS is dependsOn SQS, so you don't create a race condition.
 
+7. Lambda function send SNS & SQS
+
+    Function permission
+
+        ```json
+            "LambdaExecutionRole": {
+                "Type": "AWS::IAM::Role",
+                "Properties": {
+                    "RoleName": {
+                        ...
+                    },
+                    "AssumeRolePolicyDocument": {
+                        ...
+                    },
+                    "Policies": [
+                        {
+                            "PolicyName": "allowSQSRead",
+                            "PolicyDocument": {
+                                "Version": "2012-10-17",
+                                "Statement": [
+                                    {
+                                        "Effect": "Allow",
+                                        "Action": [
+                                            "sqs:ReceiveMessage",
+                                            "sqs:DeleteMessage",
+                                            "sqs:GetQueueAttributes",
+                                            "sqs:ChangeMessageVisibility"
+                                        ],
+                                        "Resource": {
+                                            "Ref": "sqsacdSendSQSSqsArn"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ```
+        If added policy directly to role, you don't have to write ```DependsOn``` 
+
+8. Step Functions
+    step function intro: https://medium.com/@serverlessguru/aws-step-functions-a-users-guide-f8d313dfdfeb
+    Good Reference for email (i think he steal from here): https://serverlessfirst.com/serverless-email-scheduler/
+
+    - input / output
+        To reference any thing from the input
+        ```json
+            // input:
+                { 
+                    "a" : [ 1, 2, 3, 4 ],
+                    "b" : "B",
+                    "c" : { "d" : "D" }
+                }
+            
+            // to reference any variable from input, let's say we want b in this case
+                "$.b" // return "B"
+            // you can also do range
+                "$.a[1:2]" // return [ 2, 3 ]
+            // get something nested
+                "$.c.d" // return "D"
+            
+        ```
+
+
+
 TO-DO list:
 
     Two resources SNS, and SQS.
@@ -239,16 +304,16 @@ TO-DO list:
         One function to send a message to SNS
         A second function to be triggered when a message is received by SQS (queue).
     Two workflows:
-        Send an email
-        Will receive parameters: {email: {to, subject, htmlBody, textBody}, dueDate}
-        Will wait until TimestampPath matches dueDate to invoke a lambda function, which will send an email
-        Workflow will pass the above mentioned parameters to a lambda function
-        fromEmail (email address) will be hard-coded within a lambda function
-    Send an SMS
-        Will receive parameters {phoneNumber, message}
-        Workflow will publish SMS message to SNS
-        Another λ function to trigger/execute SendEmail workflow. This function will pass all needed parameters to a workflow aka StateMachine
-        Ahh, and yet another function to execute SendSMS workflow... 
+        Send an email with delay
+            Will receive parameters: {email: {to, subject, htmlBody, textBody}, dueDate}
+            Will wait until TimestampPath matches dueDate to invoke a lambda function, which will send an email
+            Workflow will pass the above mentioned parameters to a lambda function
+            fromEmail (email address) will be hard-coded within a lambda function
+        Send an SMS
+            Will receive parameters {phoneNumber, message}
+            Workflow will publish SMS message to SNS
+    Another λ function to trigger/execute SendEmail workflow. This function will pass all needed parameters to a workflow aka StateMachine
+    Ahh, and yet another function to execute SendSMS workflow... 
 
 
 NOTE: 
