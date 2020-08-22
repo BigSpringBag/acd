@@ -1,31 +1,18 @@
 {
-	"AWSTemplateFormatVersion": "2010-09-09",
-	"Description": "Lambda Function resource stack creation using Amplify CLI",
-	"Parameters": {
-		"CloudWatchRule": {
-			"Type": "String",
-			"Default": "NONE",
-			"Description": " Schedule Expression"
-		},
-		"env": {
-			"Type": "String"
-		},
-		"sqsacdSendSQSSqsArn": {
-			"Type": "String"
-		}
-	},
-	"Conditions": {
-		"ShouldNotCreateEnvResources": {
-			"Fn::Equals": [
-				{
-					"Ref": "env"
-				},
-				"NONE"
-			]
-		}
-	},
-	"Resources": {
-		"LambdaFunction": {
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "An example template with an IAM role for a Lambda state machine.",
+  "Parameters": {
+    "CloudWatchRule": {
+      "Type": "String",
+      "Default": "NONE",
+      "Description": " Schedule Expression"
+    },
+    "env": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "LambdaFunction": {
 			"Type": "AWS::Lambda::Function",
 			"Metadata": {
 				"aws:asset:path": "./src",
@@ -118,7 +105,7 @@
 				},
 				"Policies": [
 					{
-						"PolicyName": "allowSQSRead",
+						"PolicyName": "allowEmailSend",
 						"PolicyDocument": {
 							"Version": "2012-10-17",
 							"Statement": [
@@ -139,8 +126,8 @@
 					}
 				]
 			}
-		},
-		"lambdaexecutionpolicy": {
+    },
+    "lambdaexecutionpolicy": {
 			"DependsOn": [
 				"LambdaExecutionRole"
 			],
@@ -183,46 +170,60 @@
 				}
 			}
 		},
-		"SQSEventSourceMapping": {
-			"Type": "AWS::Lambda::EventSourceMapping",
-			"Properties": {
-				"BatchSize": 10,
-				"Enabled": true,
-				"EventSourceArn": {
-					"Ref": "sqsacdSendSQSSqsArn"
-				},
-				"FunctionName": {
-					"Fn::GetAtt": [
-						"LambdaFunction",
-						"Arn"
-					]
-				}
-			}
-		}
-	},
-	"Outputs": {
-		"Name": {
-			"Value": {
-				"Ref": "LambdaFunction"
-			}
-		},
-		"Arn": {
-			"Value": {
-				"Fn::GetAtt": [
-					"LambdaFunction",
-					"Arn"
-				]
-			}
-		},
-		"Region": {
-			"Value": {
-				"Ref": "AWS::Region"
-			}
-		},
-		"LambdaExecutionRole": {
-			"Value": {
-				"Ref": "LambdaExecutionRole"
-			}
-		}
-	}
+    "StatesExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  {
+                    "Fn::Sub": "states.${AWS::Region}.amazonaws.com"
+                  }
+                ]
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "StatesExecutionPolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": ["lambda:InvokeFunction"],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "MyStateMachine": {
+      "Type": "AWS::StepFunctions::StateMachine",
+      "Properties": {
+        "DefinitionString": {
+          "Fn::Sub": [
+            "{\n  \"Comment\": \"A Hello World example using an AWS Lambda function\",\n  \"StartAt\": \"HelloWorld\",\n  \"States\": {\n    \"HelloWorld\": {\n      \"Type\": \"Task\",\n      \"Resource\": \"${lambdaArn}\",\n      \"End\": true\n    }\n  }\n}",
+            {
+              "lambdaArn": {
+                "Fn::GetAtt": ["MyLambdaFunction", "Arn"]
+              }
+            }
+          ]
+        },
+        "RoleArn": {
+          "Fn::GetAtt": ["StatesExecutionRole", "Arn"]
+        }
+      }
+    }
+  }
 }

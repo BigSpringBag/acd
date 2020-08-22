@@ -1,0 +1,22 @@
+{
+  "Comment": "A Hello World example using an AWS Lambda function",
+  "StartAt": "Init",
+  "States": {
+    "Init": {
+      "Comment": "Just to initialized the state machine",
+      "Type": "Pass",
+      "Next": "wait_until"
+    },
+
+    "wait_until": {
+      "Type": "Wait",
+      "Timestamp": "$.dueDate",
+      "Next": "NextState"
+    },
+    "HelloWorld": {
+      "Type": "Task",
+      "Resource": "${lambdaArn}",
+      "End": true
+    }
+  }
+}
