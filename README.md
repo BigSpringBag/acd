@@ -3,6 +3,7 @@ Do this then restart shell
 echo "alias amp='amplify'" >> ~/.bash_profile
 ```
 
+
 Userful commands
 
 ```bash
