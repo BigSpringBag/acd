@@ -1,19 +1,18 @@
 {
-  "Comment": "A Hello World example using an AWS Lambda function",
+  "Comment": "Send email with delay",
   "StartAt": "Init",
   "States": {
     "Init": {
       "Comment": "Just to initialized the state machine",
       "Type": "Pass",
-      "Next": "wait_until"
+      "Next": "WaitUntil"
     },
-
-    "wait_until": {
+    "WaitUntil": {
       "Type": "Wait",
-      "Timestamp": "$.dueDate",
-      "Next": "NextState"
+      "TimestampPath": "$.dueDate",
+      "Next": "SendEmail"
     },
-    "HelloWorld": {
+    "SendEmail": {
       "Type": "Task",
       "Resource": "${lambdaArn}",
       "End": true

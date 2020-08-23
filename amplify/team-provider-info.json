@@ -22,7 +22,8 @@
                 },
                 "AdminQueries3ef9f8a9": {},
                 "acdSendSNSLambda": {},
-                "acdSubSQSLambda": {}
+                "acdSubSQSLambda": {},
+                "acdSendSESLambda": {}
             }
         }
     }

@@ -116,6 +116,12 @@
 					]
 				}
 			]
+		},
+		"acdSendSESLambda": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": []
 		}
 	},
 	"storage": {
@@ -128,6 +134,19 @@
 		"acdSimpleStepFunctions": {
 			"service": "StepFunctions",
 			"providerPlugin": "awscloudformation"
+		},
+		"acdSendEmailWithDelay": {
+			"service": "StepFunctions",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "acdSendSESLambda",
+					"attributes": [
+						"Arn"
+					]
+				}
+			]
 		}
 	},
 	"sqs": {

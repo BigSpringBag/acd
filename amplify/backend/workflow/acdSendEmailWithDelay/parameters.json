@@ -1,1 +1,8 @@
-{"senderEmail":"tao@yutaoyan.com"}
+{
+    "functionacdSendSESLambdaArn": {
+        "Fn::GetAtt": [
+            "functionacdSendSESLambda",
+            "Outputs.Arn"
+        ]
+    }
+}

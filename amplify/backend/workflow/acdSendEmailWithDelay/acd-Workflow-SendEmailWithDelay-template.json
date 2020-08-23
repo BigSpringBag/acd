@@ -1,92 +1,23 @@
 {
-  "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "An example template with an IAM role for a Lambda state machine.",
-  "Parameters": {
-    "CloudWatchRule": {
-      "Type": "String",
-      "Default": "NONE",
-      "Description": " Schedule Expression"
-    },
-    "env": {
-      "Type": "String"
-    }
-  },
-  "Resources": {
-    "LambdaFunction": {
-			"Type": "AWS::Lambda::Function",
-			"Metadata": {
-				"aws:asset:path": "./src",
-				"aws:asset:property": "Code"
-			},
-			"Properties": {
-				"Handler": "index.handler",
-				"FunctionName": {
-					"Fn::If": [
-						"ShouldNotCreateEnvResources",
-						"acdSubSQSLambda",
-						{
-							"Fn::Join": [
-								"",
-								[
-									"acdSubSQSLambda",
-									"-",
-									{
-										"Ref": "env"
-									}
-								]
-							]
-						}
-					]
-				},
-				"Environment": {
-					"Variables": {
-						"ENV": {
-							"Ref": "env"
-						},
-						"REGION": {
-							"Ref": "AWS::Region"
-						},
-						"SQSArn": {
-							"Ref": "sqsacdSendSQSSqsArn"
-						}
-					}
-				},
-				"Role": {
-					"Fn::GetAtt": [
-						"LambdaExecutionRole",
-						"Arn"
-					]
-				},
-				"Runtime": "nodejs12.x",
-				"Layers": [],
-				"Timeout": "25",
-				"Code": {
-					"S3Bucket": "amplify-amplifycalendlydemo-dev-201301-deployment",
-					"S3Key": "amplify-builds/acdSubSQSLambda-32724f73784666636d69-build.zip"
-				}
-			}
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "An example template with an IAM role for a Lambda state machine.",
+	"Parameters": {
+		"CloudWatchRule": {
+			"Type": "String",
+			"Default": "NONE",
+			"Description": " Schedule Expression"
 		},
-		"LambdaExecutionRole": {
+		"env": {
+			"Type": "String"
+		},
+		"functionacdSendSESLambdaArn": {
+			"Type": "String"
+		}
+	},
+	"Resources": {
+		"StatesExecutionRole": {
 			"Type": "AWS::IAM::Role",
 			"Properties": {
-				"RoleName": {
-					"Fn::If": [
-						"ShouldNotCreateEnvResources",
-						"amplifycalendlydemoLambdaRolec254b1b6",
-						{
-							"Fn::Join": [
-								"",
-								[
-									"amplifycalendlydemoLambdaRolec254b1b6",
-									"-",
-									{
-										"Ref": "env"
-									}
-								]
-							]
-						}
-					]
-				},
 				"AssumeRolePolicyDocument": {
 					"Version": "2012-10-17",
 					"Statement": [
@@ -94,136 +25,55 @@
 							"Effect": "Allow",
 							"Principal": {
 								"Service": [
-									"lambda.amazonaws.com"
+									{
+										"Fn::Sub": "states.${AWS::Region}.amazonaws.com"
+									}
 								]
 							},
-							"Action": [
-								"sts:AssumeRole"
-							]
+							"Action": "sts:AssumeRole"
 						}
 					]
 				},
+				"Path": "/",
 				"Policies": [
 					{
-						"PolicyName": "allowEmailSend",
+						"PolicyName": "StatesExecutionPolicy",
 						"PolicyDocument": {
 							"Version": "2012-10-17",
 							"Statement": [
 								{
 									"Effect": "Allow",
 									"Action": [
-										"sqs:ReceiveMessage",
-										"sqs:DeleteMessage",
-										"sqs:GetQueueAttributes",
-										"sqs:ChangeMessageVisibility"
+										"lambda:InvokeFunction"
 									],
-									"Resource": {
-										"Ref": "sqsacdSendSQSSqsArn"
-									}
+									"Resource": "*"
 								}
 							]
 						}
 					}
 				]
 			}
-    },
-    "lambdaexecutionpolicy": {
-			"DependsOn": [
-				"LambdaExecutionRole"
-			],
-			"Type": "AWS::IAM::Policy",
+		},
+		"MyStateMachine": {
+			"Type": "AWS::StepFunctions::StateMachine",
 			"Properties": {
-				"PolicyName": "lambda-execution-policy",
-				"Roles": [
-					{
-						"Ref": "LambdaExecutionRole"
-					}
-				],
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [
+				"DefinitionString": {
+					"Fn::Sub": [
+						"{\"Comment\":\"Send email with delay\",\"StartAt\":\"Init\",\"States\":{\"Init\":{\"Comment\":\"Just to initialized the state machine\",\"Type\":\"Pass\",\"Next\":\"WaitUntil\"},\"WaitUntil\":{\"Type\":\"Wait\",\"TimestampPath\":\"$.dueDate\",\"Next\":\"SendEmail\"},\"SendEmail\":{\"Type\":\"Task\",\"Resource\":\"${lambdaArn}\",\"End\":true}}}",
 						{
-							"Effect": "Allow",
-							"Action": [
-								"logs:CreateLogGroup",
-								"logs:CreateLogStream",
-								"logs:PutLogEvents"
-							],
-							"Resource": {
-								"Fn::Sub": [
-									"arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
-									{
-										"region": {
-											"Ref": "AWS::Region"
-										},
-										"account": {
-											"Ref": "AWS::AccountId"
-										},
-										"lambda": {
-											"Ref": "LambdaFunction"
-										}
-									}
-								]
+							"lambdaArn": {
+								"Ref": "functionacdSendSESLambdaArn"
 							}
 						}
 					]
+				},
+				"RoleArn": {
+					"Fn::GetAtt": [
+						"StatesExecutionRole",
+						"Arn"
+					]
 				}
 			}
-		},
-    "StatesExecutionRole": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Principal": {
-                "Service": [
-                  {
-                    "Fn::Sub": "states.${AWS::Region}.amazonaws.com"
-                  }
-                ]
-              },
-              "Action": "sts:AssumeRole"
-            }
-          ]
-        },
-        "Path": "/",
-        "Policies": [
-          {
-            "PolicyName": "StatesExecutionPolicy",
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": ["lambda:InvokeFunction"],
-                  "Resource": "*"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "MyStateMachine": {
-      "Type": "AWS::StepFunctions::StateMachine",
-      "Properties": {
-        "DefinitionString": {
-          "Fn::Sub": [
-            "{\n  \"Comment\": \"A Hello World example using an AWS Lambda function\",\n  \"StartAt\": \"HelloWorld\",\n  \"States\": {\n    \"HelloWorld\": {\n      \"Type\": \"Task\",\n      \"Resource\": \"${lambdaArn}\",\n      \"End\": true\n    }\n  }\n}",
-            {
-              "lambdaArn": {
-                "Fn::GetAtt": ["MyLambdaFunction", "Arn"]
-              }
-            }
-          ]
-        },
-        "RoleArn": {
-          "Fn::GetAtt": ["StatesExecutionRole", "Arn"]
-        }
-      }
-    }
-  }
+		}
+	}
 }

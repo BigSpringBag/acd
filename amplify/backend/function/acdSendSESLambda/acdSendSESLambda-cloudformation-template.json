@@ -9,9 +9,6 @@
 		},
 		"env": {
 			"Type": "String"
-		},
-		"snsacdSendSNSacdSNSTopicArn": {
-			"Type": "String"
 		}
 	},
 	"Conditions": {
@@ -36,12 +33,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"acdSendSNSLambda",
+						"acdSendSESLambda",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"acdSendSNSLambda",
+									"acdSendSESLambda",
 									"-",
 									{
 										"Ref": "env"
@@ -58,9 +55,6 @@
 						},
 						"REGION": {
 							"Ref": "AWS::Region"
-						},
-						"SNSTopic": {
-							"Ref": "snsacdSendSNSacdSNSTopicArn"
 						}
 					}
 				},
@@ -75,7 +69,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-amplifycalendlydemo-dev-201301-deployment",
-					"S3Key": "amplify-builds/acdSendSNSLambda-754c66644f4146747445-build.zip"
+					"S3Key": "amplify-builds/acdSendSESLambda-41783070657831593072-build.zip"
 				}
 			}
 		},
@@ -85,12 +79,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"amplifycalendlydemoLambdaRolefd33e1c7",
+						"amplifycalendlydemoLambdaRole05494de2",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"amplifycalendlydemoLambdaRolefd33e1c7",
+									"amplifycalendlydemoLambdaRole05494de2",
 									"-",
 									{
 										"Ref": "env"
@@ -115,7 +109,25 @@
 							]
 						}
 					]
-				}
+				},
+				"Policies": [
+					{
+						"PolicyName": "allowSESSend",
+						"PolicyDocument": {
+							"Version": "2012-10-17",
+							"Statement": [
+								{
+									"Effect": "Allow",
+									"Action": [
+										"ses:SendEmail",
+										"ses:SendRawEmail"
+									],
+									"Resource": "arn:aws:ses:us-east-1:756273826396:identity/etc@yutaoyan.com"
+								}
+							]
+						}
+					}
+				]
 			}
 		},
 		"lambdaexecutionpolicy": {
