@@ -1,5 +1,5 @@
 {
-  "Comment": "Send email with delay",
+  "Comment": "Insert User Record via AppSync on PostConfirmation",
   "StartAt": "Choice State",
   "States": {
     "Choice State": {
@@ -20,7 +20,7 @@
               "StringGreaterThan": ""
             }
           ],
-          "Next": "Wait Until"
+          "Next": "Insert User"
         }
       ],
       "Default": "Pass State"
@@ -29,12 +29,7 @@
       "Type": "Pass",
       "End": true
     },
-    "Wait Until": {
-      "Type": "Wait",
-      "TimestampPath": "$.dueDate",
-      "Next": "Send Email"
-    },
-    "Send Email": {
+    "Insert User": {
       "Type": "Task",
       "Resource": "${lambdaArn}",
       "Parameters": {

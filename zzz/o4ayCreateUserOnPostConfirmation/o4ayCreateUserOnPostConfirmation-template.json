@@ -10,7 +10,7 @@
     "env": {
       "Type": "String"
     },
-    "functionacdSendSESLambdaArn": {
+    "functiono4ayCreateUserLambdaArn": {
       "Type": "String"
     }
   },
@@ -52,12 +52,12 @@
         ]
       }
     },
-    "MyStateMachine": {
+    "o4ayCreateUserOnPostConfirmation": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
         "DefinitionString": {
           "Fn::Sub": [
-            "{\"Comment\":\"Send email with delay\",\"StartAt\":\"Choice State\",\"States\":{\"Choice State\":{\"Type\":\"Choice\",\"Choices\":[{\"And\":[{\"Variable\":\"$.input.email.to\",\"IsPresent\":true},{\"Variable\":\"$.input.email.to\",\"IsNull\":false},{\"Variable\":\"$.input.email.to[0]\",\"StringGreaterThan\":\"\"}],\"Next\":\"Wait Until\"}],\"Default\":\"Pass State\"},\"Pass State\":{\"Type\":\"Pass\",\"End\":true},\"Wait Until\":{\"Type\":\"Wait\",\"TimestampPath\":\"$.dueDate\",\"Next\":\"Send Email\"},\"Send Email\":{\"Type\":\"Task\",\"Resource\":\"${lambdaArn}\",\"Parameters\":{\"email.$\":\"$.input.email\",\"dueDate.$\":\"$.input.dueDate\"},\"Retry\":[{\"ErrorEquals\":[\"CustomError\"],\"IntervalSeconds\":1,\"MaxAttempts\":2,\"BackoffRate\":2},{\"ErrorEquals\":[\"States.TaskFailed\"],\"IntervalSeconds\":30,\"MaxAttempts\":2,\"BackoffRate\":2},{\"ErrorEquals\":[\"States.ALL\"],\"IntervalSeconds\":5,\"MaxAttempts\":5,\"BackoffRate\":2}],\"End\":true}}}",
+            "{\"Comment\":\"Insert User Record via AppSync on PostConfirmation\",\"StartAt\":\"Choice State\",\"States\":{\"Choice State\":{\"Type\":\"Choice\",\"Choices\":[{\"And\":[{\"Variable\":\"$.input.email.to\",\"IsPresent\":true},{\"Variable\":\"$.input.email.to\",\"IsNull\":false},{\"Variable\":\"$.input.email.to[0]\",\"StringGreaterThan\":\"\"}],\"Next\":\"Insert User\"}],\"Default\":\"Pass State\"},\"Pass State\":{\"Type\":\"Pass\",\"End\":true},\"Insert User\":{\"Type\":\"Task\",\"Resource\":\"${lambdaArn}\",\"Parameters\":{\"email.$\":\"$.input.email\",\"dueDate.$\":\"$.input.dueDate\"},\"Retry\":[{\"ErrorEquals\":[\"CustomError\"],\"IntervalSeconds\":1,\"MaxAttempts\":2,\"BackoffRate\":2},{\"ErrorEquals\":[\"States.TaskFailed\"],\"IntervalSeconds\":30,\"MaxAttempts\":2,\"BackoffRate\":2},{\"ErrorEquals\":[\"States.ALL\"],\"IntervalSeconds\":5,\"MaxAttempts\":5,\"BackoffRate\":2}],\"End\":true}}}",
             {
               "lambdaArn": {
                 "Ref": "functionacdSendSESLambdaArn"

@@ -1,0 +1,5 @@
+{
+  "functionacdAdminCreateUserArn": {
+    "Fn::GetAtt": ["functionacdAdminCreateUser", "Outputs.Arn"]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "api": {
+      "o4ay": [
+        "create"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

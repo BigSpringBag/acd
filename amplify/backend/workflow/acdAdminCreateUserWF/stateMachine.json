@@ -1,5 +1,5 @@
 {
-  "Comment": "Send email with delay",
+  "Comment": "Cognito Admin Create User",
   "StartAt": "Choice State",
   "States": {
     "Choice State": {
@@ -8,19 +8,19 @@
         {
           "And": [
             {
-              "Variable": "$.input.email.to",
+              "Variable": "$.input.email",
               "IsPresent": true
             },
             {
-              "Variable": "$.input.email.to",
+              "Variable": "$.input.email",
               "IsNull": false
             },
             {
-              "Variable": "$.input.email.to[0]",
+              "Variable": "$.input.email",
               "StringGreaterThan": ""
             }
           ],
-          "Next": "Wait Until"
+          "Next": "Admin Create User"
         }
       ],
       "Default": "Pass State"
@@ -29,17 +29,12 @@
       "Type": "Pass",
       "End": true
     },
-    "Wait Until": {
-      "Type": "Wait",
-      "TimestampPath": "$.dueDate",
-      "Next": "Send Email"
-    },
-    "Send Email": {
+    "Admin Create User": {
       "Type": "Task",
       "Resource": "${lambdaArn}",
       "Parameters": {
         "email.$": "$.input.email",
-        "dueDate.$": "$.input.dueDate"
+        "input.$": "$.input"
       },
       "Retry": [
         {
