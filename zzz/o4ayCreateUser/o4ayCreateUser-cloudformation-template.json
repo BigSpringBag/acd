@@ -9,6 +9,14 @@
 		},
 		"env": {
 			"Type": "String"
+		},
+		"apio4ayGraphQLAPIIdOutput": {
+			"Type": "String",
+			"Default": "apio4ayGraphQLAPIIdOutput"
+		},
+		"apio4ayGraphQLAPIEndpointOutput": {
+			"Type": "String",
+			"Default": "apio4ayGraphQLAPIEndpointOutput"
 		}
 	},
 	"Conditions": {
@@ -33,12 +41,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"acdSendSESLambda",
+						"o4ayCreateUser",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"acdSendSESLambda",
+									"o4ayCreateUser",
 									"-",
 									{
 										"Ref": "env"
@@ -55,6 +63,12 @@
 						},
 						"REGION": {
 							"Ref": "AWS::Region"
+						},
+						"API_O4AY_GRAPHQLAPIIDOUTPUT": {
+							"Ref": "apio4ayGraphQLAPIIdOutput"
+						},
+						"API_O4AY_GRAPHQLAPIENDPOINTOUTPUT": {
+							"Ref": "apio4ayGraphQLAPIEndpointOutput"
 						}
 					}
 				},
@@ -68,8 +82,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-amplifycalendlydemo-dev-201301-deployment",
-					"S3Key": "amplify-builds/acdSendSESLambda-645561527a4e71797a36-build.zip"
+					"S3Bucket": "amplify-o4ayamplify-dev-141553-deployment",
+					"S3Key": "amplify-builds/o4ayCreateUser-50363674715a68547738-build.zip"
 				}
 			}
 		},
@@ -79,12 +93,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"amplifycalendlydemoLambdaRole05494de2",
+						"o4aydevappLambdaRole42c442a3",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"amplifycalendlydemoLambdaRole05494de2",
+									"o4aydevappLambdaRole42c442a3",
 									"-",
 									{
 										"Ref": "env"
@@ -109,25 +123,7 @@
 							]
 						}
 					]
-				},
-				"Policies": [
-					{
-						"PolicyName": "allowSESSend",
-						"PolicyDocument": {
-							"Version": "2012-10-17",
-							"Statement": [
-								{
-									"Effect": "Allow",
-									"Action": [
-										"ses:SendEmail",
-										"ses:SendRawEmail"
-									],
-									"Resource": "arn:aws:ses:us-east-1:756273826396:identity/etc@yutaoyan.com"
-								}
-							]
-						}
-					}
-				]
+				}
 			}
 		},
 		"lambdaexecutionpolicy": {
@@ -168,6 +164,55 @@
 									}
 								]
 							}
+						}
+					]
+				}
+			}
+		},
+		"AmplifyResourcesPolicy": {
+			"DependsOn": [
+				"LambdaExecutionRole"
+			],
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+				"PolicyName": "amplify-lambda-execution-policy",
+				"Roles": [
+					{
+						"Ref": "LambdaExecutionRole"
+					}
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Action": [
+								"appsync:Create*",
+								"appsync:StartSchemaCreation",
+								"appsync:GraphQL"
+							],
+							"Resource": [
+								{
+									"Fn::Join": [
+										"",
+										[
+											"arn:aws:appsync:",
+											{
+												"Ref": "AWS::Region"
+											},
+											":",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											":apis/",
+											{
+												"Ref": "apio4ayGraphQLAPIIdOutput"
+											},
+											"/*"
+										]
+									]
+								}
+							]
 						}
 					]
 				}

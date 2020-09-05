@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "auth": {
+      "amplifycalendlydemoa51c7064a51c7064": [
+        "create"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

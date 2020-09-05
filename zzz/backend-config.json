@@ -1,0 +1,135 @@
+{
+  "function": {
+    "o4ayTest1": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
+    },
+    "o4ayPostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "AdminQueries8b5d480c": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "o4ay",
+          "attributes": ["UserPoolId"]
+        }
+      ]
+    },
+    "o4ayCreateUser": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "o4ay",
+          "attributes": ["GraphQLAPIIdOutput", "GraphQLAPIEndpointOutput"]
+        }
+      ]
+    }
+  },
+  "workflow": {
+    "o4aySendSMS": {
+      "service": "StepFunctions",
+      "providerPlugin": "awscloudformation"
+    },
+    "o4ayCreateUserOnPostConfirmation": {
+      "service": "StepFunctions",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "o4ayCreateUser",
+          "attributes": ["Arn", "Name"]
+        }
+      ]
+    }
+  },
+  "sns": {
+    "o4aySNS": {
+      "service": "sns",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "sqs": {
+    "o4aySQS": {
+      "service": "sqs",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "auth": {
+    "userPoolGroups": {
+      "service": "Cognito-UserPool-Groups",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "o4ay",
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ]
+        }
+      ]
+    },
+    "o4ay": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "o4ayPostConfirmation",
+          "triggerProvider": "Cognito",
+          "attributes": ["Arn", "Name"]
+        }
+      ]
+    }
+  },
+  "api": {
+    "AdminQueries": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "o4ay",
+          "attributes": ["UserPoolId"]
+        },
+        {
+          "category": "function",
+          "resourceName": "AdminQueries8b5d480c",
+          "attributes": ["Arn", "Name"]
+        }
+      ]
+    },
+    "o4ay": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "autho4ay"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "functiono4ayCreateUserLambdaArn": {
+    "Fn::GetAtt": ["functiono4ayCreateUserLambda", "Outputs.Arn"]
+  }
+}

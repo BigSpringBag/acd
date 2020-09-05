@@ -1,5 +1,5 @@
 {
-  "Comment": "Send email with delay",
+  "Comment": "Call mcSendEmail function",
   "StartAt": "Choice State",
   "States": {
     "Choice State": {
@@ -20,7 +20,7 @@
               "StringGreaterThan": ""
             }
           ],
-          "Next": "Wait Until"
+          "Next": "Wait State"
         }
       ],
       "Default": "Pass State"
@@ -29,32 +29,23 @@
       "Type": "Pass",
       "End": true
     },
-    "Wait Until": {
+    "Wait State": {
       "Type": "Wait",
-      "TimestampPath": "$.dueDate",
-      "Next": "Send Email"
+      "TimestampPath": "$.input.dueDate",
+      "Next": "Send Email Function"
     },
-    "Send Email": {
+    "Send Email Function": {
       "Type": "Task",
-      "Resource": "${lambdaArn}",
-<<<<<<< HEAD
-      "Catch": [
-        {
-          "ErrorEquals": [
-            "Invoke Error"
-          ],
-          "Next": "InvokeError"
-        }
-      ],
-      "End": true
-    },
-    "InvokeError": {
-      "Type": "Pass",
-      "Result": "Something went wrong when invoking sendEmail lambda",
-=======
+      "Resource": "arn:aws:lambda:us-east-1:644871051928:function:marsconnectedSendEmail-newdev",
       "Parameters": {
+        "message.$": "$.input.message",
         "email.$": "$.input.email",
-        "dueDate.$": "$.input.dueDate"
+        "to.$": "$.input.email.to",
+        "subject.$": "$.input.email.subject",
+        "textBody.$": "$.input.email.textBody",
+        "htmlBody.$": "$.input.email.htmlBody",
+        "dueDate.$": "$.input.dueDate",
+        "appendScheduleDateToBody.$": "$.input.appendScheduleDateToBody"
       },
       "Retry": [
         {
@@ -76,7 +67,6 @@
           "BackoffRate": 2
         }
       ],
->>>>>>> 2077790adb3d78e9a51ef16cab343831996f63e3
       "End": true
     }
   }
